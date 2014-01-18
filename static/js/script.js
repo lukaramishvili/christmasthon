@@ -99,11 +99,12 @@ function saver(url) {
     };
 }
 
-
+var sharedContext;
 
 function draw(){
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
+    sharedContext = ctx;
 
     var mouse = {x: 0, y: 0};
     var last_mouse = {x: 0, y: 0};
@@ -133,10 +134,19 @@ function draw(){
     }, false);
 
     var onPaint = function() {
-        ctx.beginPath();
-        ctx.moveTo(last_mouse.x, last_mouse.y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.closePath();
-        ctx.stroke();
+	drawOnCanvas({ x : last_mouse.x, y : last_mouse.y },
+		     { x : mouse.x, y : mouse.y });
     };
 }
+
+function drawOnCanvas(pt0, pt1){
+    var ctx = sharedContext;
+    ctx.beginPath();
+    ctx.moveTo(pt0.x, pt0.y);
+    ctx.lineTo(pt1.x, pt1.y);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+var canvasWidth = 640;
+var canvasHeight = 480;

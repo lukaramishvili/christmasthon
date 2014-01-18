@@ -36,6 +36,8 @@ function processAction(argset){
 
 var xMin = -150;
 var xMax = 150;
+var yMin = 100;
+var yMax = 350;
 var zOn = 100;
 var zOff = 200;
 
@@ -53,9 +55,25 @@ var leap = zLeap().init(function(frame, prevFrame){
 	    var x = f.tipPosition[0];
 	    var y = f.tipPosition[1];
 	    var z = f.tipPosition[2];
+	    //
+	    var xPrev = prevFrame.hands[nh].fingers[nf].tipPosition[0];
+	    var yPrev = prevFrame.hands[nh].fingers[nf].tipPosition[1];
+	    var zPrev = prevFrame.hands[nh].fingers[nf].tipPosition[2];
+	    //
 	    if(z < zOn){
 		//set drawing cursor
 		//draw();
+		var pt0 = { x : canvasWidth*(Math.abs(xPrev-xMin) 
+					     / Math.abs(xMax-xMin)),
+		            y : canvasHeight-canvasHeight*(Math.abs(yPrev-yMin) 
+					     / Math.abs(yMax-yMin)),
+			  };
+		var pt1 = { x : canvasWidth*(Math.abs(x-xMin) 
+					     / Math.abs(xMax-xMin)),
+		            y : canvasHeight-canvasHeight*(Math.abs(y-yMin)
+					     / Math.abs(yMax-yMin)),
+			  };
+		drawOnCanvas(pt0, pt1);
 	    } else if(z > zOn && z < zOff){
 		//near touchzone, set warning cursor
 	    } else {
