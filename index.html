@@ -13,7 +13,17 @@
 	<video id="video" autoplay>a</video>
 	<button id="snap" onclick='snap()' hidden="hidden">Snap Photo</button>
 	<button id="download" hidden="hidden">Download</button>
-	<canvas id="canvas" width="640" height="480" class="border" hidden="hidden"></canvas>
+
+	<style type="text/css">
+	  .fingertip { position:absolute; z-index:3000; border-radius:12px;
+	      width:20px; height:20px;
+	  }
+	  .fingertip.off { background-color:green; }
+	  .fingertip.touchzone { background-color:yellow; }
+	  .fingertip.on { background-color:red; }
+	</style>
+	<div id="canvas-container" style="position:relative;">
+	  <canvas id="canvas" width="640" height="480" class="border" hidden="hidden"></canvas></div>
 	<div id="success"></div>
 
 <script type="text/javascript">

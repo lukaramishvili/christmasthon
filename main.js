@@ -50,6 +50,7 @@ var leap = zLeap().init(function(frame, prevFrame){
     }*/
     for(var nh in frame.hands){
 	var h = frame.hands[nh];
+	var points = [];
 	for(var nf in h.fingers){
 	    var f = h.fingers[nf];
 	    var x = f.tipPosition[0];
@@ -60,28 +61,34 @@ var leap = zLeap().init(function(frame, prevFrame){
 	    var yPrev = prevFrame.hands[nh].fingers[nf].tipPosition[1];
 	    var zPrev = prevFrame.hands[nh].fingers[nf].tipPosition[2];
 	    //
+	    var zone = "off";
+	    //
+	    var pt0 = { x : canvasWidth*(Math.abs(xPrev-xMin) 
+					 / Math.abs(xMax-xMin)),
+		        y : canvasHeight-canvasHeight*(Math.abs(yPrev-yMin) 
+						       / Math.abs(yMax-yMin)),
+		      };
+	    var pt1 = { x : canvasWidth*(Math.abs(x-xMin) 
+					 / Math.abs(xMax-xMin)),
+		        y : canvasHeight-canvasHeight*(Math.abs(y-yMin)
+						       / Math.abs(yMax-yMin)),
+		      };
 	    if(z < zOn){
 		//set drawing cursor
-		//draw();
-		var pt0 = { x : canvasWidth*(Math.abs(xPrev-xMin) 
-					     / Math.abs(xMax-xMin)),
-		            y : canvasHeight-canvasHeight*(Math.abs(yPrev-yMin) 
-					     / Math.abs(yMax-yMin)),
-			  };
-		var pt1 = { x : canvasWidth*(Math.abs(x-xMin) 
-					     / Math.abs(xMax-xMin)),
-		            y : canvasHeight-canvasHeight*(Math.abs(y-yMin)
-					     / Math.abs(yMax-yMin)),
-			  };
+		zone = "on";
 		drawOnCanvas(pt0, pt1);
 	    } else if(z > zOn && z < zOff){
 		//near touchzone, set warning cursor
+		zone = "touchzone";
 	    } else {
 		//not touching, set normal cursor
+		zone = "off";
 	    }
+	    points.push({ x : pt1.x, y : pt1.y, zone : zone });
 	    //
 	    console.log(JSON.stringify([x,y,z]));
 	}
+	showFingertips(points);
     }
 });
 

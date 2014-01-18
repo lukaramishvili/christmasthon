@@ -148,5 +148,15 @@ function drawOnCanvas(pt0, pt1){
     ctx.stroke();
 }
 
+function showFingertips(points){
+    $("#canvas-container .fingertip").remove();
+    for(var ipt in points){
+	var pt = points[ipt];
+	$("<div />").addClass("fingertip " + pt.zone)
+	    .css({ left : pt.x, top : pt.y })
+	    .appendTo("#canvas-container");
+    }
+}
+
 var canvasWidth = 640;
 var canvasHeight = 480;
